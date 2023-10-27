@@ -1,51 +1,71 @@
-package com.example;
-
-import org.hamcrest.MatcherAssert;
-import org.junit.Rule;
+import com.example.Animal;
+import com.example.Feline;
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.junit.runners.Parameterized;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.junit.MockitoJUnit;
-import org.mockito.junit.MockitoRule;
-
+import org.mockito.junit.MockitoJUnitRunner;
+import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
 
-import static org.hamcrest.CoreMatchers.equalTo;
+@RunWith(MockitoJUnitRunner.class)
+public class FelineTest {
 
-@RunWith(Parameterized.class)
-public class LionParameterizedTests {
-
-    @Rule
-    public MockitoRule rule = MockitoJUnit.rule();
     @Mock
-    Feline feline;
+    Animal animal;
 
-    private final String sex;
-    private final boolean hasMane;
+    @Test
+    public void testEatMeat() throws Exception {
+        //Arrange
+        Feline feline = new Feline();
+        Mockito.when(animal.getFood("Хищник")).thenReturn(Arrays.asList("Животные", "Птицы", "Рыба"));
+        List<String> expected = animal.getFood("Хищник");
+       
+        //Act
+        List<String> actual = feline.eatMeat();
 
-    public LionParameterizedTests(String sex, boolean hasMane) {
-        this.sex = sex;
-        this.hasMane = hasMane;
-    }
-
-    @Parameterized.Parameters(name = "Класс Lion. Пол: {0}")
-    public static Object[][] setSexForLion() {
-        return new Object[][] {
-                {"Самец", true},
-                {"Самка", false},
-        };
+        //Assert
+        Assert.assertEquals("Meat не соответствует", expected, actual);
     }
 
     @Test
-    public void doesHaveManeIsCorrect() throws Exception {
-        MatcherAssert.assertThat("Грива есть только у льва",
-                new Lion(feline, this.sex).doesHaveMane(),
-                equalTo(hasMane)
-        );
+    public void testGetFamily(){
+        //Arrange
+        Feline feline = new Feline();
+        String expected = "Кошачьи";
 
+        //Act
+        String actual = feline.getFamily();
+
+        //Assert
+        Assert.assertEquals("Family не соответствует",expected, actual);
+    }
+
+    @Test
+    public void testGetKittensNull(){
+        //Arrange
+        Feline feline = new Feline();
+        int expected = 1;
+
+        //Act
+        int actual = feline.getKittens();
+
+        //Assert
+        Assert.assertEquals("kittensCount не соответствует", expected, actual);
+    }
+
+    @Test
+    public void testGetKittensNotNull(){
+        //Arrange
+        Feline feline = new Feline();
+        int expected = 1;
+
+        //Act
+        int actual = feline.getKittens(1);
+
+        //Assert
+        Assert.assertEquals("kittensCount не соответствует", expected, actual);
     }
 
 }
