@@ -1,44 +1,47 @@
-package com.example;
-
-import org.hamcrest.MatcherAssert;
+import com.example.Cat;
+import com.example.Feline;
+import com.example.Predator;
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 
+import java.util.Arrays;
 import java.util.List;
 
-import static org.hamcrest.CoreMatchers.equalTo;
-
 @RunWith(MockitoJUnitRunner.class)
-public class CatTests {
+public class CatTest {
+
+    @Test
+    public void testGetSound(){
+        //Arrange
+        Cat cat = new Cat(null);
+        String expected = "Мяу";
+
+        //Act
+        String actual = cat.getSound();
+
+        //Assert
+        Assert.assertEquals("Sound не соответствует", expected, actual);
+    }
 
     @Mock
-    Feline feline;
+    Predator predator;
 
     @Test
-    public void getSoundIsCorrect() {
-        String expectedString = "Мяу";
-
-        MatcherAssert.assertThat("Кот мяукает не так",
-                new Cat(feline).getSound(),
-                equalTo(expectedString)
-        );
-    }
-
-    @Test
-    public void getFoodIsCorrect() throws Exception {
+    public void testGetFood() throws Exception {
+        //Arrange
+        Feline feline = new Feline();
         Cat cat = new Cat(feline);
-        List<String> expectedListOfFood = List.of("Мясо");
-        Mockito.when(feline.eatMeat()).thenReturn(expectedListOfFood);
+        Mockito.when(predator.eatMeat()).thenReturn(Arrays.asList("Животные", "Птицы", "Рыба"));
+        List<String> expected = predator.eatMeat();
 
-        MatcherAssert.assertThat("Вернулся некорректный список еды",
-                cat.getFood(),
-                equalTo(expectedListOfFood)
+        //Act
+         List<String> actual = cat.getFood();
 
-        );
-
+        //Assert
+        Assert.assertEquals("Food не соответствует", expected, actual);
     }
-
 }
